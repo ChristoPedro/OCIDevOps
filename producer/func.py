@@ -4,12 +4,17 @@ from fdk import response
 import logging
 import json
 
-partition = 'Partition'
-server = 'streaming.sa-saopaulo-1.oci.oraclecloud.com:9092'
-username = 'ladcloudengineeringhub/KafkaUser/ocid1.streampool.oc1.sa-saopaulo-1.amaaaaaakeemx2yafx6ibx4pny7vicnvza734jsa3iltxsl247h46oiqamtq'
-password = 'IpgfOK16p]q:XrQ;2[IV'
-
 def handler(ctx, data: io.BytesIO=None):
+
+    try:
+        cfg = ctx.Config()
+        partition = cfg["partition"]
+        server = cfg["server"]
+        username = cfg["username"]
+        password = cfg["password"]
+    except Exception as e:
+        print('Missing function parameters', flush=True)
+        raise
 
     data = json.loads(data.getvalue())
     body = str(data)
