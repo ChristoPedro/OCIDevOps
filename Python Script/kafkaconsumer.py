@@ -13,4 +13,10 @@ if __name__ == '__main__':
                             sasl_plain_password = 'IpgfOK16p]q:XrQ;2[IV')
 
     for message in consumer:
-        print ("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value)) 
+        print("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value))
+        f = open("dados.txt", "a")
+        f.write(("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value)) )
+        f.close()
+
+    f = open("dados.txt", "r")
+    print(f.read())

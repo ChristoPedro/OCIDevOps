@@ -1,0 +1,1 @@
+Partition:0:19: key=b'Dados' value=b"{'Nome': 'Pedro'}"Partition:0:20: key=b'Dados' value=b"{'Nome': 'Pedro'}"Partition:0:21: key=b'Dados' value=b"{'Nome': 'Pedro'}"

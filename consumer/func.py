@@ -1,0 +1,42 @@
+import io
+import json
+import logging
+import oci.object_storage
+from kafka import KafkaConsumer
+
+from fdk import response
+
+path = '/tmp/'
+
+def put_object(bucketName, objectName, content):
+    signer = oci.auth.signers.get_resource_principals_signer()
+    client = oci.object_storage.ObjectStorageClient(config={}, signer=signer)
+    namespace = client.get_namespace().data
+    output=""
+    try:
+        object = client.put_object(namespace, bucketName, objectName, json.dumps(content))
+        output = "Success: Put object '" + objectName + "' in bucket '" + bucketName + "'"
+    except Exception as e:
+        output = "Failed: " + str(e.message)
+    return { "state": output }
+
+def handler(ctx, data: io.BytesIO=None):
+
+    consumer = KafkaConsumer('Partition', bootstrap_servers = 'streaming.sa-saopaulo-1.oci.oraclecloud.com:9092', 
+                            security_protocol = 'SASL_SSL', sasl_mechanism = 'PLAIN',
+                            consumer_timeout_ms = 10000, auto_offset_reset = 'earliest',
+                            group_id='group-0',
+                            sasl_plain_username = 'ladcloudengineeringhub/KafkaUser/ocid1.streampool.oc1.sa-saopaulo-1.amaaaaaakeemx2yafx6ibx4pny7vicnvza734jsa3iltxsl247h46oiqamtq', 
+                            sasl_plain_password = 'IpgfOK16p]q:XrQ;2[IV')
+
+    content = []
+
+    for message in consumer:
+        content.append("%s:%d:%d: key=%s value=%s" % (message.topic, message.partition, message.offset, message.key, message.value))
+
+    resp = put_object('Dados', 'KafkaTeste.txt', content)
+    return response.Response(
+        ctx,
+        response_data=json.dumps(resp),
+        headers={"Content-Type": "application/json"}
+    )
