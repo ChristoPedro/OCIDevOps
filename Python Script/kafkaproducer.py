@@ -5,6 +5,13 @@ import json
 
 if __name__ == '__main__':
 
+    message = '{"File": {"Dados": "Dados de arquivo"},"NoSQL":{"Dados": "NoSQL"}}'
+
+    dados = json.loads(message)
+
+    topics = [] 
+    for keys in dados.keys():
+        topics.append(keys)
 
     producer = KafkaProducer(bootstrap_servers = 'streaming.sa-saopaulo-1.oci.oraclecloud.com:9092', 
                          security_protocol = 'SASL_SSL', sasl_mechanism = 'PLAIN',
@@ -13,6 +20,7 @@ if __name__ == '__main__':
     key = 'Dados'.encode('utf-8')
     data = 'Hello'.encode('utf-8')
 
-    producer.send('Partition', key=key, value=data)
+    for x in topics:
 
-    producer.flush()
+        data = json.dumps(dados[x]).encode('UTF-8')
+        print(data)

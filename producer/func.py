@@ -17,7 +17,10 @@ def handler(ctx, data: io.BytesIO=None):
         raise
 
     data = json.loads(data.getvalue())
-    body = str(data)
+
+    topics = [] 
+    for keys in data.keys():
+        topics.append(keys)
 
     producer = KafkaProducer(bootstrap_servers = server, 
                          security_protocol = 'SASL_SSL', sasl_mechanism = 'PLAIN',
@@ -25,15 +28,18 @@ def handler(ctx, data: io.BytesIO=None):
                          sasl_plain_password = password)
     
     key = 'Dados'.encode('utf-8')
-    data = body.encode('utf-8')
+    
+    for x in topics:
 
-    try:
-        producer.send(partition, key=key, value=data)
-        producer.flush()
-        resp = 'Dados Inseridos com sucesso na Partition: ' + partition
-    except (Exception, ValueError) as ex:
-        logging.getLogger().info('error parsing json payload: ' + str(ex)) 
-        resp = 'error parsing json payload: ' + str(ex)
+        values = json.dumps(data[x]).encode('UTF-8')
+
+        try:
+            producer.send(x, key=key, value=values)
+            producer.flush()
+            resp = 'Dados Inseridos com sucesso'
+        except (Exception, ValueError) as ex:
+            logging.getLogger().info('error parsing json payload: ' + str(ex)) 
+            resp = 'error parsing json payload: ' + str(ex)
 
     return response.Response(
         ctx,

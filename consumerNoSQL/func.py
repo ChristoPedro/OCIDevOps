@@ -1,27 +1,24 @@
 import io
 import json
 import logging
-import oci.object_storage
-from datetime import datetime
+import requests
 from kafka import KafkaConsumer
 
 from fdk import response
 
-now = datetime.now()
-dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
-datahora = str(dt_string)
-
-def put_object(bucketName, objectName, content):
-    signer = oci.auth.signers.get_resource_principals_signer()
-    client = oci.object_storage.ObjectStorageClient(config={}, signer=signer)
-    namespace = client.get_namespace().data
-    output=""
+def soda_insert(ordsbaseurl, schema, dbuser, dbpwd, document):
+    auth=(dbuser, dbpwd)
+    sodaurl = ordsbaseurl + schema + '/soda/latest/'
+    collectionurl = sodaurl + "demodados"
+    headers = {'Content-Type': 'application/json'}
+    r = requests.post(collectionurl, auth=auth, headers=headers, data=json.dumps(document))
+    r_json = {}
     try:
-        object = client.put_object(namespace, bucketName, objectName, json.dumps(content))
-        output = "Success: Put object '" + objectName + "' in bucket '" + bucketName + "'"
-    except Exception as e:
-        output = "Failed: " + str(e.message)
-    return { "state": output }
+        r_json = json.loads(r.text)
+    except ValueError as e:
+        print(r.text, flush=True)
+        raise
+    return r_json
 
 def handler(ctx, data: io.BytesIO=None):
 
@@ -31,6 +28,11 @@ def handler(ctx, data: io.BytesIO=None):
         server = cfg["server"]
         username = cfg["username"]
         password = cfg["password"]
+        ordsbaseurl = cfg["ordsbaseURL"]
+        schema = cfg["schema"]
+        dbuser = cfg["dbuser"]
+        dbpwd = cfg["dbpwd"]
+
     except Exception as e:
         print('Missing function parameters', flush=True)
         raise
@@ -46,12 +48,10 @@ def handler(ctx, data: io.BytesIO=None):
     content = []
 
     for message in consumer:
-        
-        content.append("Topic: %s Partition: %d Offset: %d: key= %s value= %s" % (message.topic, message.partition, message.offset, message.key, message.value.decode('UTF-8')))
+        content.append(message.value.decode('UTF-8'))
 
-    filename = 'KafkaDemo ' + datahora + '.txt'
-
-    resp = put_object('Dados', filename, content)
+    resp = soda_insert(ordsbaseurl, schema, dbuser, dbpwd, content)
+    
     return response.Response(
         ctx,
         response_data=json.dumps(resp),

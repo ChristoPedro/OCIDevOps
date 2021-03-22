@@ -1,0 +1,4 @@
+fdk
+oci
+kafka-python
+requests
