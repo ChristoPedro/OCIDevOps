@@ -1,8 +1,8 @@
 schema_version: 20180708
-name: csharpfn
-version: 0.0.6
+name: dotnet
+version: 0.0.17
 runtime: docker
 triggers:
-- name: csharpfn
+- name: dotnet-trigger
   type: http
-  source: /csharpfn
+  source: /imagedims
