@@ -25,33 +25,12 @@ def put_object(bucketName, objectName, content):
 
 def handler(ctx, data: io.BytesIO=None):
 
-    try:
-        cfg = ctx.Config()
-        partition = cfg["partition"]
-        server = cfg["server"]
-        username = cfg["username"]
-        password = cfg["password"]
-    except Exception as e:
-        print('Missing function parameters', flush=True)
-        raise
-
-    consumer = KafkaConsumer(partition, 
-                            bootstrap_servers = server, 
-                            security_protocol = 'SASL_SSL', sasl_mechanism = 'PLAIN',
-                            consumer_timeout_ms = 10000, auto_offset_reset = 'earliest',
-                            group_id='group-0',
-                            sasl_plain_username = username, 
-                            sasl_plain_password = password)
-
-    content = []
-
-    for message in consumer:
-        
-        content.append("Topic: %s Partition: %d Offset: %d: key= %s value= %s" % (message.topic, message.partition, message.offset, message.key, message.value.decode('UTF-8')))
+    content = json.loads(data.getvalue())
 
     filename = 'KafkaDemo ' + datahora + '.txt'
 
     resp = put_object('Dados', filename, content)
+    
     return response.Response(
         ctx,
         response_data=json.dumps(resp),

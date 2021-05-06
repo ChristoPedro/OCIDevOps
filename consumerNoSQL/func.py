@@ -24,10 +24,6 @@ def handler(ctx, data: io.BytesIO=None):
 
     try:
         cfg = ctx.Config()
-        partition = cfg["partition"]
-        server = cfg["server"]
-        username = cfg["username"]
-        password = cfg["password"]
         ordsbaseurl = cfg["ordsbaseURL"]
         schema = cfg["schema"]
         dbuser = cfg["dbuser"]
@@ -37,18 +33,7 @@ def handler(ctx, data: io.BytesIO=None):
         print('Missing function parameters', flush=True)
         raise
 
-    consumer = KafkaConsumer(partition, 
-                            bootstrap_servers = server, 
-                            security_protocol = 'SASL_SSL', sasl_mechanism = 'PLAIN',
-                            consumer_timeout_ms = 10000, auto_offset_reset = 'earliest',
-                            group_id='group-0',
-                            sasl_plain_username = username, 
-                            sasl_plain_password = password)
-
-    content = []
-
-    for message in consumer:
-        content.append(message.value.decode('UTF-8'))
+    content = json.loads(data.getvalue())
 
     resp = soda_insert(ordsbaseurl, schema, dbuser, dbpwd, content)
     
