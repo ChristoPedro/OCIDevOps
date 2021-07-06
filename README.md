@@ -4,7 +4,7 @@ Exemplo de Arquitetura Orientada a Eventos utilizando o Stack Cloud Native do OC
 
 ## Demo
 
-Demonstração de Cloud Native utilizando Functions + Streaming + Connetor Hub 
+Demonstração de Cloud Native utilizando API Gateway + Functions + Streaming + Connetor Hub 
 
 - A função producer é trigada através do API Gateway e gera dados nas duas filas NoSQL e File.
 
