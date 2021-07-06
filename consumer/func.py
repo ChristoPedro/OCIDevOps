@@ -25,11 +25,19 @@ def put_object(bucketName, objectName, content):
 
 def handler(ctx, data: io.BytesIO=None):
 
+    try:
+            cfg = ctx.Config()
+            bucketName = cfg["bucketname"]
+            
+        except Exception as e:
+            print('Missing function parameters', flush=True)
+            raise
+
     content = json.loads(data.getvalue())
 
     filename = 'KafkaDemo ' + datahora + '.txt'
 
-    resp = put_object('Dados', filename, content)
+    resp = put_object(bucketName, filename, content)
     
     return response.Response(
         ctx,
