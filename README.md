@@ -24,7 +24,7 @@ Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions 
 Serão criados os sequites serviços no OCI:
 
 - [Compartment](#Compartment)
-- Policies
+- [Policies](#Policies)
 - Object Storage
 - Autonomous Json
 - Streaming
@@ -35,4 +35,13 @@ Serão criados os sequites serviços no OCI:
 ## Compartment
 
 Navegando no menu do OCI vá em Identity & Security > Compartimentos:
+
+
+![compartmentsmenu](images/compartmentsmenu.png)
+
+Agora crie um compartimento para o deploy da arquitetura com o nome de usa preferencia:
+
+![compartment](images/compartment.png)
+
+## Policies
 
