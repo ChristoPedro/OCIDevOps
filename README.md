@@ -34,3 +34,5 @@ Serão criados os sequites serviços no OCI:
 
 ## Compartment
 
+Navegando no menu do OCI vá em Identity & Security > Compartimentos:
+
