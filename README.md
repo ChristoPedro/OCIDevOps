@@ -24,7 +24,7 @@ Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions 
 Serão criados os sequites serviços no OCI:
 
 - [Compartment](#Compartment)
-- [Object Storage](#Object*Storage)
+- [Object Storage](#Object-Storage)
 - Autonomous Json
 - Streaming
 - Functions
