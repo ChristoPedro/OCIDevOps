@@ -21,16 +21,25 @@ Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions 
 
 ## Deployment
 
+### Criação da Infra
+
 Serão criados os sequites serviços no OCI:
 
 - [Compartment](#Compartment)
 - [Object Storage](#Object-Storage)
-- Autonomous Json
-- Streaming
+- [Autonomous Json](#Autonomous-Json)
+- [Streaming](#Streaming)
 - Functions
 - API Gateway
 - [Policies](#Policies)
 - Connection Hub 
+
+### Deployment do Código
+
+- Configuração e Deployment do Functions
+- Configuração do Connetion Hub
+- Configuração do API Gateway
+- Teste
 
 ## Compartment
 
@@ -55,6 +64,37 @@ Crie um Object Storage Standard com o nome um nome de sua preferência
 
 ![bucketmenu](images/bucket.png)
 
+## Autonomous Json
+
+Para criação do Autonomous Json que será o banco NoSQL da arquitetura, navegue no menu do OCI Oracle Database > Autonomous Json Database
+
+![autonmousmenu](images/autonomousmenu.png)
+
+Crie um banco Autonomous do tipo JSON:
+
+> :warning: **Crie o Banco dentro do Compartimento criado anteriormente**
+
+![autonmous](images/autonomous.png)
+
+Apos a criação do banco vamos pegar o URL do ORDS que será usado posteriormente no código.
+
+Na pagina de informações do Autonomous Json vá em Service Console:
+
+![serviceconsole](images/serviceconsole.png)
+
+Navegamos para deployment e copianos o link no quadrado de RESTful Services and SODA:
+
+![ords](images/ords.png)
+
+> :warning: **Para facilitar futuras configurações salve esse URL em um bloco de notas**
+
+## Streaming
+
+Vamos criar agora um Streaming Pool para o Streaming e as duas filas:
+
+### Crando o Streaming Pool
+
+### Criando as Filas
 
 ## Policies
 
