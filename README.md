@@ -24,12 +24,12 @@ Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions 
 Serão criados os sequites serviços no OCI:
 
 - [Compartment](#Compartment)
-- [Policies](#Policies)
-- Object Storage
+- [Object Storage](#Object*Storage)
 - Autonomous Json
 - Streaming
 - Functions
 - API Gateway
+- [Policies](#Policies)
 - Connection Hub 
 
 ## Compartment
@@ -43,5 +43,31 @@ Agora crie um compartimento para o deploy da arquitetura com o nome de usa prefe
 
 ![compartment](images/compartment.png)
 
+## Object Storage
+
+Navegie no menu do OCI vá em Storage > Buckets
+
+![bucketmenu](images/bucketmenu.png)
+
+Crie um Object Storage Standard com o nome um nome de sua preferência
+
+> :warning: **Crie o Bucket dentro do Compartimento criado anteriormente**
+
+![bucketmenu](images/bucket.png)
+
+
 ## Policies
 
+Vamos criar as políticas necessárias para a execução desse fluxo.
+
+### Permitir que o Functions possa utilizar os recursos de OCI
+
+```
+Allow service FaaS to manage all-resources in compartment [Seu Compartimento]
+```
+
+### Permitir que o API Gateway liste e utilize o Functions
+
+```
+ALLOW any-user to use functions-family in compartment[Seu Compartimento] where ALL {request.principal.type = 'ApiGateway', request.resource.compartment.id = '[OCID do seu compartimento]'}
+```
