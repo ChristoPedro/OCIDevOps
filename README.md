@@ -32,7 +32,7 @@ Serão criados os sequites serviços no OCI:
 - [Streaming](#Streaming)
 - [Registry](#Registry)
 - [Functions](#Functions)
-- API Gateway
+- [API Gateway](#API-Gateway)
 - [Policies](#Policies)
 
 ### Deployment do Código
