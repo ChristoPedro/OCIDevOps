@@ -4,7 +4,7 @@ Exemplo de Arquitetura Orientada a Eventos utilizando o Stack Cloud Native do OC
 
 ## Resumo
 
-Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions + Streaming + Connetor Hub. É possivel através desses componentes criar um fluxo de processamento de dados utilizando funções serveless e filas.
+Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions + Streaming + Connetor Hub. É possível através desses componentes criar um fluxo de processamento de dados utilizando funções serveless e filas.
 
 ## Arquitetura
 
@@ -23,7 +23,7 @@ Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions 
 
 ### Criação da Infra
 
-Serão criados os sequites serviços no OCI:
+Serão criados os seguintes serviços no OCI:
 
 - [Compartment](#Compartment)
 - [Networking](#Networking)
@@ -42,6 +42,8 @@ Serão criados os sequites serviços no OCI:
 - Configuração do API Gateway
 - Teste
 
+# Criação da Infra
+
 ## Compartment
 
 Navegando no menu do OCI vá em **Identity & Security > Compartimentos**
@@ -55,7 +57,7 @@ Agora crie um **Compartment** para o deploy da arquitetura com o nome de usa pre
 
 ## Networking
 
-Vamos criar um **VCN** (Visrtual Cloud Networking), onde sera feito o deploy do Functions, API Gateway e do endpoint privado do Stream.
+Vamos criar um **VCN** (Virtual Cloud Networking), onde sera feito o deploy do Functions, API Gateway e do endpoint privado do Stream.
 
 Navegue no menu do OCI, vá em **Networking > Virtual Cloud Networking**
 
@@ -110,7 +112,7 @@ Na pagina de informações do Autonomous Json vá em **Service Console**:
 
 ![serviceconsole](images/serviceconsole.png)
 
-Navegamos para **Deployment** e copianos o link no quadrado de **RESTful Services and SODA**
+Navegamos para **Deployment** e copiamos o link no quadrado de **RESTful Services and SODA**
 
 ![ords](images/ords.png)
 
@@ -162,7 +164,7 @@ Navegando no menu do OCI vamos em **Developer Service > Container Registry**
 
 ![menuocir](images/menuocir.png)
 
-Crie um novo repositório, lembrando que no nome deve conter apenas letras minúculas e sem caractéres especiais.
+Crie um novo repositório, lembrando que no nome deve conter apenas letras minusculas e sem caractéres especiais.
 
 > :warning: **Crie o Registry no Compartimento criado anteriormente**
 
@@ -184,13 +186,13 @@ Criar a nova aplicação na VCN e Subnet Pública Criada anteriormente.
 
 ## API Gateway
 
-API Gateway vai ser o elemento que nos permitirar realizar chamadas Functions de forma mais simples, nesse caso sem autenticação. Ele vai ser o ponto de entrada de dados no fluxo que estamos criando.
+API Gateway vai ser o elemento que nos permitirá realizar chamadas Functions de forma mais simples, nesse caso sem autenticação. Ele vai ser o ponto de entrada de dados no fluxo que estamos criando.
 
 Navegue no menu do OCI vá em **Developer Services > API Managemnt**
 
 ![apigatewaymenu](images/apigatewaymenu.png)
 
-Agora vamos criar o Gateway na Subnet Pública da VNC crianda anteriormente.
+Agora vamos criar o Gateway na Subnet Pública da VNC criada anteriormente.
 
 ![apigateway](images/apigateway.png)
 
@@ -209,3 +211,34 @@ Allow service FaaS to manage all-resources in compartment [Seu Compartimento]
 ```
 ALLOW any-user to use functions-family in compartment[Seu Compartimento] where ALL {request.principal.type = 'ApiGateway', request.resource.compartment.id = '[OCID do seu compartimento]'}
 ```
+
+# Deployment do Código
+
+## Configuração e Deployment do Functions
+
+Para facilitar o deployment do código, vamos utilizar o **Cloud Shell** para fazer o deployment das funções na Aplicação do functions.
+
+### Acessando Cloud Shell
+
+No canto superior direito da Console do OCI, encontramos o botão do **Cloud Shell** entre a Region e o ícone de alerta do OCI.
+
+![cloudshellmenu](images/cloudshellmenu.png)
+
+Um terminal abrirá na parte inferior do navegador
+
+![cloudshell](images/cloudshell.png)
+
+### Clonando o Projeto
+
+Já temos o **GIT** instalado no Cloud Shell, vamos utilizar o seguinte comando para clonar os códigos para o cloud shell
+
+```
+git clone https://github.com/ChristoPedro/OCIDevOps.git
+```
+
+### Configurando o fn client
+
+Vamos configurar o client do fn no cloud shell.
+
+Primeiro vamos gerar um API Token para seu usuário conseguir logar no OCI Registry.
+
