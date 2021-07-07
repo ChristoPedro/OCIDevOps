@@ -26,13 +26,14 @@ Arquitetura Cloud Native orientada a eventos utilizando API Gateway + Functions 
 Serão criados os sequites serviços no OCI:
 
 - [Compartment](#Compartment)
+- [Networking](#Networking)
 - [Object Storage](#Object-Storage)
 - [Autonomous Json](#Autonomous-Json)
 - [Streaming](#Streaming)
-- Functions
+- [Registry](#Registry)
+- [Functions](#Functions)
 - API Gateway
 - [Policies](#Policies)
-- Connection Hub 
 
 ### Deployment do Código
 
@@ -43,46 +44,73 @@ Serão criados os sequites serviços no OCI:
 
 ## Compartment
 
-Navegando no menu do OCI vá em Identity & Security > Compartimentos:
+Navegando no menu do OCI vá em **Identity & Security > Compartimentos**
 
 
 ![compartmentsmenu](images/compartmentsmenu.png)
 
-Agora crie um compartimento para o deploy da arquitetura com o nome de usa preferencia:
+Agora crie um **Compartment** para o deploy da arquitetura com o nome de usa preferencia:
 
 ![compartment](images/compartment.png)
 
+## Networking
+
+Vamos criar um **VCN** (Visrtual Cloud Networking), onde sera feito o deploy do Functions, API Gateway e do endpoint privado do Stream.
+
+Navegue no menu do OCI, vá em **Networking > Virtual Cloud Networking**
+
+![menuvcn](images/menuvcn.png)
+
+Vamos criar a rede através do **Wizard** sem a necessidade de colocar alguma informação específica, além do nome.
+
+> :warning: **Crie a VCN dentro do Compartimento criado anteriormente**
+
+![vcn](images/vcn.png)
+
+Com a rede criada vamos adicionar 2 regras a **Security List Default** da rede:
+
+1. Habilitando a comunicação dentro da VCN para qualquer máquina e qualquer porta.
+
+![regra1](images/regra1.png)
+
+2. Habilitando a comunicação com a internet na porta 443 para o Api Gateway 
+
+![regra2](images/regra2.png)
+
 ## Object Storage
 
-Navegie no menu do OCI vá em Storage > Buckets
+O **Object Storage** será o destino final dos dados de uma das filas.
+
+Navegue no menu do OCI vá em **Storage > Buckets**
 
 ![bucketmenu](images/bucketmenu.png)
 
-Crie um Object Storage Standard com o nome um nome de sua preferência
-
 > :warning: **Crie o Bucket dentro do Compartimento criado anteriormente**
+
+Crie um Object Storage **Standard** com o nome um nome de sua preferência
+
 
 ![bucketmenu](images/bucket.png)
 
 ## Autonomous Json
 
-Para criação do Autonomous Json que será o banco NoSQL da arquitetura, navegue no menu do OCI Oracle Database > Autonomous Json Database
+Para criação do **Autonomous Json** que será o banco NoSQL da arquitetura, navegue no menu do OCI Oracle **Database > Autonomous Json Database**
 
 ![autonmousmenu](images/autonomousmenu.png)
 
-Crie um banco Autonomous do tipo JSON:
+Crie um banco Autonomous do tipo **JSON**:
 
 > :warning: **Crie o Banco dentro do Compartimento criado anteriormente**
 
 ![autonmous](images/autonomous.png)
 
-Apos a criação do banco vamos pegar o URL do ORDS que será usado posteriormente no código.
+Após a criação do banco, vamos pegar o URL do **ORDS** que será usado posteriormente no código.
 
-Na pagina de informações do Autonomous Json vá em Service Console:
+Na pagina de informações do Autonomous Json vá em **Service Console**:
 
 ![serviceconsole](images/serviceconsole.png)
 
-Navegamos para deployment e copianos o link no quadrado de RESTful Services and SODA:
+Navegamos para **Deployment** e copianos o link no quadrado de **RESTful Services and SODA**
 
 ![ords](images/ords.png)
 
@@ -90,15 +118,85 @@ Navegamos para deployment e copianos o link no quadrado de RESTful Services and 
 
 ## Streaming
 
-Vamos criar agora um Streaming Pool para o Streaming e as duas filas:
+Vamos criar agora um **Stream Pool** para e as duas filas, necessárias.
 
-### Crando o Streaming Pool
+### Crando o Stream Pool
+
+No menu do OCI vamos em **Analytics & AI > Streaming**
+
+![streamingmenu](images/streamingmenu.png)
+
+No menu lateral vamos selecionar a opção **Stream Pools**
+
+![streampoolmenu](images/streampoolmenu.png)
+
+E criar um novo Stream Pool, onde serão criadas as filas. Nesse caso vamos criar o Pool com **Endpoint Privado** e selecionar a VCN e a Subnet Pública criada anteriormente.
+
+> :warning: **Crie o Stream Pool no Compartimento criado anteriormente**
+
+![streampool](images/streampool.png)
 
 ### Criando as Filas
 
+De volta ao menu principal do **Streaming**, vamos dessa vez em **Streams** no menu lateral
+
+![streammenu](images/streammenu.png)
+
+Serão criados dois Streams, no Stream Pool que criamos no passo anterior:
+
+> :warning: **Crie os Streams no Compartimento criado anteriormente**
+
+1. Chamado **Object Storage**
+
+![streamOS](images/streamOS.png)
+
+2. Chamado **NoSQL**
+
+![streamNoSQL](images/streamNoSQL.png)
+
+## Registry
+
+Vamos criar um **OCI Registry** onde as Docker Images do Functions serão armazenadas no OCI.
+
+Navegando no menu do OCI vamos em **Developer Service > Container Registry**
+
+![menuocir](images/menuocir.png)
+
+Crie um novo repositório, lembrando que no nome deve conter apenas letras minúculas e sem caractéres especiais.
+
+> :warning: **Crie o Registry no Compartimento criado anteriormente**
+
+![ocir](images/ocir.png)
+
+## Functions
+
+Vamos criar agora uma nova aplicação no **Oracle Functions**, essa aplicação será o agrupamento lógico das funções que serão utilizadas para inserir e tratar os dados de cada fila.
+
+Navegando no menu do OCI vamos em **Developer Services > Applications**
+
+![FunctionsMenu](images/FunctionsMenu.png)
+
+Criar a nova aplicação na VCN e Subnet Pública Criada anteriormente.
+
+> :warning: **Crie a Aplicação no Compartimento criado anteriormente**
+
+![Functions](images/Functions.png)
+
+## API Gateway
+
+API Gateway vai ser o elemento que nos permitirar realizar chamadas Functions de forma mais simples, nesse caso sem autenticação. Ele vai ser o ponto de entrada de dados no fluxo que estamos criando.
+
+Navegue no menu do OCI vá em **Developer Services > API Managemnt**
+
+![apigatewaymenu](images/apigatewaymenu.png)
+
+Agora vamos criar o Gateway na Subnet Pública da VNC crianda anteriormente.
+
+![apigateway](images/apigateway.png)
+
 ## Policies
 
-Vamos criar as políticas necessárias para a execução desse fluxo.
+Vamos criar as **Policies** necessárias para a execução desse fluxo.
 
 ### Permitir que o Functions possa utilizar os recursos de OCI
 
