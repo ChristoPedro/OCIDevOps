@@ -263,7 +263,7 @@ Com o token salvo podemos voltar na página da aplicação do **Functions** que 
 
 1. No menu do OCI vá em **Developer Services > Applications**
 
-![fnmenu](images/Functionsmenu.png)
+![fnmenu](images/FunctionsMenu.png)
 
 2. Selecione a aplicação criada anteriormente e no menu lateral vá em **Getting Started**
 
