@@ -37,7 +37,7 @@ Serão criados os seguintes serviços no OCI:
 
 ### Deployment do Código
 
-- Configuração e Deployment do Functions
+- [Configuração e Deploy do Functions](#Configuração-e-Deploy-do-Functions)
 - Configuração do Connetion Hub
 - Configuração do API Gateway
 - Teste
@@ -214,7 +214,7 @@ ALLOW any-user to use functions-family in compartment[Seu Compartimento] where A
 
 # Deployment do Código
 
-## Configuração e Deployment do Functions
+## Configuração e Deploy do Functions
 
 Para facilitar o deployment do código, vamos utilizar o **Cloud Shell** para fazer o deployment das funções na Aplicação do functions.
 
@@ -236,9 +236,51 @@ Já temos o **GIT** instalado no Cloud Shell, vamos utilizar o seguinte comando 
 git clone https://github.com/ChristoPedro/OCIDevOps.git
 ```
 
-### Configurando o fn client
+### Configurando o fn Client
 
 Vamos configurar o client do fn no cloud shell.
 
-Primeiro vamos gerar um API Token para seu usuário conseguir logar no OCI Registry.
+#### Gerando Auth Token
+
+Primeiro vamos gerar um **Auth Token** para seu usuário conseguir logar no OCI Registry.
+
+1. Na console do OCI click no icone de usuário no canto superior direito, e depois no seu nome de usuário.
+
+![menuuser](images/menuuser.png)
+
+2. Na página do seu usuário procure no menu lateral **Auth Token**. Depois Click em gerar um novo Token. Só é necessário dar um nome qualquer ao token.
+
+
+![token](images/token.png)
+
+> :warning: **Copie o token assim que for gerado e salve em algum lugar onde possa recupera-lo. Ele só fica disponível no memoento que é gerado!**
+
+![tokencopy](images/tokencopy.png)
+
+#### Gerando Configurações do fn Client
+
+Com o token salvo podemos voltar na página da aplicação do **Functions** que foi criado anteriormente. Lá teremos um passo a passo de configuração do ambiente para o **Cloud Shell**.
+
+1. No menu do OCI vá em **Developer Services > Applications**
+
+![fnmenu](images/Functionsmenu.png)
+
+2. Selecione a aplicação criada anteriormente e no menu lateral vá em **Getting Started**
+
+![fngettingstarted](images/fngettingstarted.png)
+
+3. Siga as instruções copiando e colando cada passo no **Cloud Shell** até o passo:
+
+```
+fn list apps
+```
+
+---
+**OBS**
+
+No momento que for executar o passo de fazer login no Docker. Utilize o Auth Token como senha.
+
+---
+
+### Fazendo o Deployment das Funções
 
