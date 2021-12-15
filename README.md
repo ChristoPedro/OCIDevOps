@@ -35,11 +35,13 @@ Serão criados os seguintes serviços no OCI:
 - [API Gateway](#API-Gateway)
 - [Policies](#Policies)
 
-### Deployment do Código
+### [Deployment do Código](#Deployment-do-Código)
 
 - [Configuração e Deploy do Functions](#Configuração-e-Deploy-do-Functions)
 - [Configuração do Configuração do Service Connector Hub](#Configuração-do-Service-Connector-Hub)
 - [Configuração do API Gateway](#Configuração-do-API-Gateway)
+
+### [Teste da Infra](#Teste-do-Sistema)
 
 # Criação da Infra
 
@@ -435,5 +437,22 @@ Na parte de configuração de rotas, vamos configurar apenas uma rota, a do Prod
 
 Clique em **next** e depois crie o Deployment
 
-## Testando o Sistema
+# Testando o Sistema
 
+Quando o deployment estiver concluido será possível encontrar e copiar o endpoint do Deployment na console do OCI.
+
+![endpoint](images/endpoint.png)
+
+Agora é possivel testar a chamada através de um curl, trocando o **[Base Path]** no código abaixo pelo endpoint do Deployment.
+
+```
+curl --location --request POST '[Base Path]/producer' \
+--header 'Content-Type: application/json' \
+--data '{
+    "File":{"Dados": "Dados de Arquivo"},
+    "NoSQL": {"Dados": "Dados de NOSQL"}
+}'
+``` 
+.
+
+> :warning: **A primeira chamada pode demorar um pouco para retornar alguma coisa, isso ocorre devido ao cold start do Functions**
