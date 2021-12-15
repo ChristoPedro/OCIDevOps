@@ -1,3 +1,11 @@
 {
-    "cSpell.enabled": false
+    "cSpell.enabled": true,
+    "cSpell.language": "pt-PT,pt-BR",
+    "cSpell.enableFiletypes": [
+        "markdown-math"
+    ],
+    "cSpell.ignoreWords": [
+        "Connetor",
+        "producer"
+    ]
 }

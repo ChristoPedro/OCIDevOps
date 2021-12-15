@@ -299,7 +299,7 @@ Acesse a pasta do producer:
 cd producer
 ```
 
-Depois edite o arquivo [func.yaml](producer/func.yaml) para adicionar os seguites parâmetros do stream:
+Depois edite o arquivo [func.yaml](producer/func.yaml) para adicionar os seguintes parâmetros do stream:
 - Password
 - Server
 - User
@@ -328,7 +328,7 @@ Acesse a pasta do consumer:
 cd consumer
 ```
 
-Depois edite o arquivo [func.yaml](consumer/func.yaml) para adicionar os seguites parâmetros do stream:
+Depois edite o arquivo [func.yaml](consumer/func.yaml) para adicionar os seguintes parâmetros do stream:
 - BuecktName
 
 Apos a edição do arquivo faça o deploy da função:
@@ -345,7 +345,7 @@ Acesse a pasta do consumer NoSQL:
 cd consumerNoSQL
 ```
 
-Depois edite o arquivo [func.yaml](consumerNoSQL/func.yaml) para adicionar os seguites parâmetros do stream:
+Depois edite o arquivo [func.yaml](consumerNoSQL/func.yaml) para adicionar os seguintes parâmetros do stream:
 - dwpassword
 - dbuser
 - schema
@@ -388,7 +388,7 @@ Crie um novo Service Connector selecionando Streaming como Source e Functions co
 
 ![createserviceobject](images/connectorhubos1.png)
 
-Selectione o Stream Pool criado anteriormente e o stream dedicado ao Object Storage
+Selecione o Stream Pool criado anteriormente e o stream dedicado ao Object Storage
 
 ![createserviceobject2](images/connectorhubos2.png)
 
@@ -418,7 +418,7 @@ Selecione o API Gateway navegue até **Deployments** no menu do lado esquerdo.
 
 ![apideployment](images/apideployment.png)
 
-Crie um novo Deployment. Na primeira págia só é necessário preencher as informações do **Basic Informations**.
+Crie um novo Deployment. Na primeira página só é necessário preencher as informações do **Basic Informations**.
 - **Name:** O nome que quer dar para o deployment
 - **Path Prefix:** O Path que virá apos o base URL
 - **Compartment:** Seleciona o compartimento que já está sendo utilizando no lab
