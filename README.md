@@ -35,7 +35,7 @@ Serão criados os seguintes serviços no OCI:
 - [API Gateway](#API-Gateway)
 - [Policies](#Policies)
 
-### [Deployment do Código](#Deployment-do-Código)
+### Deploy
 
 - [Configuração e Deploy do Functions](#Configuração-e-Deploy-do-Functions)
 - [Configuração do Configuração do Service Connector Hub](#Configuração-do-Service-Connector-Hub)
@@ -213,7 +213,7 @@ Allow service FaaS to manage all-resources in compartment [Seu Compartimento]
 ALLOW any-user to use functions-family in compartment[Seu Compartimento] where ALL {request.principal.type = 'ApiGateway', request.resource.compartment.id = '[OCID do seu compartimento]'}
 ```
 
-# Deployment do Código
+# Deploy
 
 ## Configuração e Deploy do Functions
 
