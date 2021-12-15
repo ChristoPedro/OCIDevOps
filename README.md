@@ -38,7 +38,7 @@ Serão criados os seguintes serviços no OCI:
 ### Deployment do Código
 
 - [Configuração e Deploy do Functions](#Configuração-e-Deploy-do-Functions)
-- Configuração do Connetion Hub
+- [Configuração do Configuração do Service Connector Hub](#Configuração-do-Service-Connector-Hub)
 - Configuração do API Gateway
 - Teste
 
@@ -46,7 +46,7 @@ Serão criados os seguintes serviços no OCI:
 
 ## Compartment
 
-Navegando no menu do OCI vá em **Identity & Security > Compartimentos**
+Navegue no menu do OCI vá em **Identity & Security > Compartimentos**
 
 
 ![compartmentsmenu](images/compartmentsmenu.png)
@@ -57,19 +57,19 @@ Agora crie um **Compartment** para o deploy da arquitetura com o nome de usa pre
 
 ## Networking
 
-Vamos criar um **VCN** (Virtual Cloud Networking), onde sera feito o deploy do Functions, API Gateway e do endpoint privado do Stream.
+Crie uma **VCN** (Virtual Cloud Networking), onde sera feito o deploy do Functions, API Gateway e do endpoint privado do Stream.
 
 Navegue no menu do OCI, vá em **Networking > Virtual Cloud Networking**
 
 ![menuvcn](images/menuvcn.png)
 
-Vamos criar a rede através do **Wizard** sem a necessidade de colocar alguma informação específica, além do nome.
+Crie a rede através do **Wizard** sem a necessidade de colocar alguma informação específica, além do nome.
 
 > :warning: **Crie a VCN dentro do Compartimento criado anteriormente**
 
 ![vcn](images/vcn.png)
 
-Com a rede criada vamos adicionar 2 regras a **Security List Default** da rede:
+Com a rede criada adicione 2 regras a **Security List Default** da rede:
 
 1. Habilitando a comunicação dentro da VCN para qualquer máquina e qualquer porta.
 
@@ -112,7 +112,7 @@ Na pagina de informações do Autonomous Json vá em **Service Console**:
 
 ![serviceconsole](images/serviceconsole.png)
 
-Navegamos para **Deployment** e copiamos o link no quadrado de **RESTful Services and SODA**
+Navegue para **Deployment** e copiamos o link no quadrado de **RESTful Services and SODA**
 
 ![ords](images/ords.png)
 
@@ -120,19 +120,19 @@ Navegamos para **Deployment** e copiamos o link no quadrado de **RESTful Service
 
 ## Streaming
 
-Vamos criar agora um **Stream Pool** para e as duas filas, necessárias.
+Será criado agora um **Stream Pool** para e as duas filas, necessárias.
 
 ### Crando o Stream Pool
 
-No menu do OCI vamos em **Analytics & AI > Streaming**
+No menu do OCI vá para **Analytics & AI > Streaming**
 
 ![streamingmenu](images/streamingmenu.png)
 
-No menu lateral vamos selecionar a opção **Stream Pools**
+No menu lateral selecione a opção **Stream Pools**
 
 ![streampoolmenu](images/streampoolmenu.png)
 
-E criar um novo Stream Pool, onde serão criadas as filas. Nesse caso vamos criar o Pool com **Endpoint Privado** e selecionar a VCN e a Subnet Pública criada anteriormente.
+E criar um novo Stream Pool, onde serão criadas as filas. Crie o Pool com **Endpoint Público** e selecione a VCN e a Subnet Pública criada anteriormente.
 
 > :warning: **Crie o Stream Pool no Compartimento criado anteriormente**
 
@@ -140,7 +140,7 @@ E criar um novo Stream Pool, onde serão criadas as filas. Nesse caso vamos cria
 
 ### Criando as Filas
 
-De volta ao menu principal do **Streaming**, vamos dessa vez em **Streams** no menu lateral
+De volta ao menu principal do **Streaming**, dessa vez em **Streams** no menu lateral
 
 ![streammenu](images/streammenu.png)
 
@@ -158,9 +158,9 @@ Serão criados dois Streams, no Stream Pool que criamos no passo anterior:
 
 ## Registry
 
-Vamos criar um **OCI Registry** onde as Docker Images do Functions serão armazenadas no OCI.
+Crie um **OCI Registry** onde as Docker Images do Functions serão armazenadas no OCI.
 
-Navegando no menu do OCI vamos em **Developer Service > Container Registry**
+Navegando no menu do OCI vá em **Developer Service > Container Registry**
 
 ![menuocir](images/menuocir.png)
 
@@ -172,7 +172,7 @@ Crie um novo repositório, lembrando que no nome deve conter apenas letras minus
 
 ## Functions
 
-Vamos criar agora uma nova aplicação no **Oracle Functions**, essa aplicação será o agrupamento lógico das funções que serão utilizadas para inserir e tratar os dados de cada fila.
+Crie agora uma nova aplicação no **Oracle Functions**, essa aplicação será o agrupamento lógico das funções que serão utilizadas para inserir e tratar os dados de cada fila.
 
 Navegando no menu do OCI vamos em **Developer Services > Applications**
 
@@ -192,13 +192,13 @@ Navegue no menu do OCI vá em **Developer Services > API Managemnt**
 
 ![apigatewaymenu](images/apigatewaymenu.png)
 
-Agora vamos criar o Gateway na Subnet Pública da VNC criada anteriormente.
+Agora crie o Gateway na Subnet Pública da VNC criada anteriormente.
 
 ![apigateway](images/apigateway.png)
 
 ## Policies
 
-Vamos criar as **Policies** necessárias para a execução desse fluxo.
+Crie as **Policies** necessárias para a execução desse fluxo.
 
 ### Permitir que o Functions possa utilizar os recursos de OCI
 
@@ -216,11 +216,11 @@ ALLOW any-user to use functions-family in compartment[Seu Compartimento] where A
 
 ## Configuração e Deploy do Functions
 
-Para facilitar o deployment do código, vamos utilizar o **Cloud Shell** para fazer o deployment das funções na Aplicação do functions.
+Para facilitar o deployment do código, utilize o **Cloud Shell** para fazer o deployment das funções na Aplicação do functions.
 
 ### Acessando Cloud Shell
 
-No canto superior direito da Console do OCI, encontramos o botão do **Cloud Shell** entre a Region e o ícone de alerta do OCI.
+No canto superior direito da Console do OCI, pode ser encontrado o botão do **Cloud Shell** entre a Region e o ícone de alerta do OCI.
 
 ![cloudshellmenu](images/cloudshellmenu.png)
 
@@ -230,7 +230,7 @@ Um terminal abrirá na parte inferior do navegador
 
 ### Clonando o Projeto
 
-Já temos o **GIT** instalado no Cloud Shell, vamos utilizar o seguinte comando para clonar os códigos para o cloud shell
+Já temos o **GIT** instalado no Cloud Shell, utilize o seguinte comando para clonar os códigos para o cloud shell
 
 ```
 git clone https://github.com/ChristoPedro/OCIDevOps.git
@@ -238,11 +238,11 @@ git clone https://github.com/ChristoPedro/OCIDevOps.git
 
 ### Configurando o fn Client
 
-Vamos configurar o client do fn no cloud shell.
+Configure o client do fn no cloud shell.
 
 #### Gerando Auth Token
 
-Primeiro vamos gerar um **Auth Token** para seu usuário conseguir logar no OCI Registry.
+Primeiro é preciso gerar um **Auth Token** para seu usuário conseguir logar no OCI Registry.
 
 1. Na console do OCI click no icone de usuário no canto superior direito, e depois no seu nome de usuário.
 
@@ -369,3 +369,37 @@ Faça o deploy da função:
 
 ```
 fn deploy --app [Nome da Função]
+```
+
+### Configuração do Service Connector Hub
+
+O **Service Connector Hub** atuará como um listener da fila do **Streaming** e acionará as funções quando houverem registros a serem processados.
+
+Nessa arquitetura será adicionado também uma função transform no **Service Connector Hub** para fazer o decode da mensagem do **Streaming** que é codificada em Base64.
+
+No meu do OCI navegue **Analytics>Service Connector HUB**
+
+![serviceconnectorhubmenu](images/serviceconnector1.png)
+
+#### Service Connector Object Storage
+
+Crie um novo Service Connector selecionando Streaming como Source e Functions como target.
+
+![createserviceobject](images/connectorhubos1.png)
+
+Selectione o Stream Pool criado anteriormente e o stream dedicado ao Object Storage
+
+![createserviceobject2](images/connectorhubos2.png)
+
+Na parte de **Task** configuration selecione a Task do tipo Function, depois vamos selecionar a Function Application criada anteriormente e a função **transform** para ser executada.
+
+![connecthubtask](images/connectorhubotask.png)
+
+Configure o **Target** para a Function Application criada anteriormente e selecione a função **consumer**.
+
+![connecthubtarget](images/connectorhubtarget.png)
+
+#### Service Connector Banco NoSQL
+
+Siga os passos da configuração anterior, porém trocando na parte do **Source** o stream do Object Storage pela stream **NoSQL**, e a função **Target** de consumer para **consumernosql**
+
