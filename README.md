@@ -39,8 +39,7 @@ Serão criados os seguintes serviços no OCI:
 
 - [Configuração e Deploy do Functions](#Configuração-e-Deploy-do-Functions)
 - [Configuração do Configuração do Service Connector Hub](#Configuração-do-Service-Connector-Hub)
-- Configuração do API Gateway
-- Teste
+- [Configuração do API Gateway](#Configuração-do-API-Gateway)
 
 # Criação da Infra
 
@@ -282,7 +281,7 @@ No momento que for executar o passo de fazer login no Docker. Utilize o Auth Tok
 
 ---
 
-### Fazendo o Deployment das Funções
+## Fazendo o Deployment das Funções
 
 Primeiro acesse a pasta clonada do git hub
 
@@ -290,7 +289,7 @@ Primeiro acesse a pasta clonada do git hub
 cd OCIDevOps
 ```
 
-#### Producer:
+### Producer:
 
 Acesse a pasta do producer:
 
@@ -319,7 +318,7 @@ fn deploy --app [Nome da Função] --verbose
 ```
 ---
 
-#### Consumer Object Storage:
+### Consumer Object Storage:
 
 Acesse a pasta do consumer:
 
@@ -336,7 +335,7 @@ Apos a edição do arquivo faça o deploy da função:
 fn deploy --app [Nome da Função]
 ```
 
-#### Consumer NoSQL:
+### Consumer NoSQL:
 
 Acesse a pasta do consumer NoSQL:
 
@@ -357,7 +356,7 @@ Apos a edição do arquivo faça o deploy da função:
 fn deploy --app [Nome da Função]
 ```
 
-#### Transform:
+### Transform:
 
 Acesse a pastar da função transform:
 
@@ -371,7 +370,7 @@ Faça o deploy da função:
 fn deploy --app [Nome da Função]
 ```
 
-### Configuração do Service Connector Hub
+## Configuração do Service Connector Hub
 
 O **Service Connector Hub** atuará como um listener da fila do **Streaming** e acionará as funções quando houverem registros a serem processados.
 
@@ -381,7 +380,7 @@ No meu do OCI navegue **Analytics>Service Connector HUB**
 
 ![serviceconnectorhubmenu](images/serviceconnector1.png)
 
-#### Service Connector Object Storage
+### Service Connector Object Storage
 
 Crie um novo Service Connector selecionando Streaming como Source e Functions como target.
 
@@ -399,7 +398,42 @@ Configure o **Target** para a Function Application criada anteriormente e seleci
 
 ![connecthubtarget](images/connectorhubtarget.png)
 
-#### Service Connector Banco NoSQL
+### Service Connector Banco NoSQL
 
 Siga os passos da configuração anterior, porém trocando na parte do **Source** o stream do Object Storage pela stream **NoSQL**, e a função **Target** de consumer para **consumernosql**
+
+## Configuração do API Gateway
+
+Navegue até o **API Gateway** criado anteriormente:
+
+**Developer Services > Gateways** 
+
+Agora o **API Gateway** será configurado para expor o serviço do **Producer**. A ideia é que a chamada API seja o **evento** que inicie todo o processo da arquitetura.
+
+![apigatewaymenu](images/apigatewaymenu.png)
+
+Selecione o API Gateway navegue até **Deployments** no menu do lado esquerdo.
+
+![apideployment](images/apideployment.png)
+
+Crie um novo Deployment. Na primeira págia só é necessário preencher as informações do **Basic Informations**.
+- **Name:** O nome que quer dar para o deployment
+- **Path Prefix:** O Path que virá apos o base URL
+- **Compartment:** Seleciona o compartimento que já está sendo utilizando no lab
+
+![apibasicinfo](images/apibasicinfo.png)
+
+Na parte de configuração de rotas, vamos configurar apenas uma rota, a do Producer, utilize os seguintes parametros:
+
+- **Path:** /producer
+- **Methods:** POST
+- **Type:** Oracle Functions
+- **Application:** [Nome da Função Criada Anteriormente]
+- **Function:** Producer
+
+![apirota](images/apirota.png)
+
+Clique em **next** e depois crie o Deployment
+
+## Testando o Sistema
 
