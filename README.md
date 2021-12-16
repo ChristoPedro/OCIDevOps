@@ -38,6 +38,7 @@ Serão criados os seguintes serviços no OCI:
 ### Deploy
 
 - [Configuração e Deploy do Functions](#Configuração-e-Deploy-do-Functions)
+- [Criar a Collection do Banco de dados](#Criar-a-Collection-do-Banco-de-dados)
 - [Configuração do Configuração do Service Connector Hub](#Configuração-do-Service-Connector-Hub)
 - [Configuração do API Gateway](#Configuração-do-API-Gateway)
 
@@ -360,6 +361,15 @@ Apos a edição do arquivo faça o deploy da função:
 
 ```
 fn deploy --app [Nome da Função]
+```
+
+## Criar a Collection do Banco de dados
+
+Execute o código a seguir para a criar a collection no banco de dados que será utilizada para salvar as informaçoes do sistema.
+
+```
+curl -X PUT -u 'ADMIN:[DB Password]' \
+"[SODA Base URL]/admin/soda/latest/demodados"
 ```
 
 ## Configuração do Service Connector Hub
