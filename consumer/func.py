@@ -22,14 +22,6 @@ def put_object(bucketName, objectName, content):
         output = "Failed: " + str(e.message)
     return { "state": output }
 
-def transform(content):
-    
-    indice = 0
-    for i in content:
-        content[indice]['key'] = base64.b64decode(i['key']).decode('UTF-8')
-        content[indice]['value'] = json.loads(base64.b64decode(i['value']).decode('UTF-8'))
-        indice +=1
-    return content
 
 def handler(ctx, data: io.BytesIO=None):
 
@@ -41,9 +33,7 @@ def handler(ctx, data: io.BytesIO=None):
         print('Missing function parameters', flush=True)
         raise
 
-    dados = data.getvalue()
-    
-    content = transform(dados)
+    content = data.getvalue()
 
     filename = 'KafkaDemo ' + datahora + '.txt'
 
