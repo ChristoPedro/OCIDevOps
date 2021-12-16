@@ -133,7 +133,7 @@ No menu lateral selecione a opção **Stream Pools**
 
 ![streampoolmenu](images/streampoolmenu.png)
 
-E criar um novo Stream Pool, onde serão criadas as filas. Crie o Pool com **Endpoint Público** e selecione a VCN e a Subnet Pública criada anteriormente.
+E criar um novo Stream Pool, onde serão criadas as filas. Crie o Pool com **Endpoint Público**.
 
 > :warning: **Crie o Stream Pool no Compartimento criado anteriormente**
 
@@ -149,7 +149,7 @@ Serão criados dois Streams, no Stream Pool que criamos no passo anterior:
 
 > :warning: **Crie os Streams no Compartimento criado anteriormente**
 
-1. Chamado **Object Storage**
+1. Chamado **File**
 
 ![streamOS](images/streamOS.png)
 
