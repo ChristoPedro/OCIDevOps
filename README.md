@@ -203,8 +203,15 @@ Crie as **Policies** necessárias para a execução desse fluxo.
 
 ### Permitir que o Functions possa utilizar os recursos de OCI
 
+Primeiro é necessario criar um Dynamic Group para o Functions
+
 ```
-Allow service FaaS to manage all-resources in compartment [Seu Compartimento]
+ALL {resource.type = 'fnfunc', resource.compartment.id = '[Seu Comartmento]'}
+``` 
+Depois Criar a politica de acesso
+
+```
+Allow dynamic-group [Dynamic Group Criado] to manage all-resources in compartment [Seu Compartimento]
 ```
 
 ### Permitir que o API Gateway liste e utilize o Functions
@@ -350,20 +357,6 @@ Depois edite o arquivo [func.yaml](consumerNoSQL/func.yaml) para adicionar os se
 - **ordsbaseURL**
 
 Apos a edição do arquivo faça o deploy da função:
-
-```
-fn deploy --app [Nome da Função]
-```
-
-### Transform:
-
-Acesse a pastar da função transform:
-
-```
-cd transform
-```
-
-Faça o deploy da função:
 
 ```
 fn deploy --app [Nome da Função]

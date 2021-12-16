@@ -1,7 +1,6 @@
 import io
 import json
 import oci.object_storage
-import base64
 from datetime import datetime
 
 from fdk import response
@@ -16,7 +15,7 @@ def put_object(bucketName, objectName, content):
     namespace = client.get_namespace().data
     output=""
     try:
-        object = client.put_object(namespace, bucketName, objectName, json.dumps(content))
+        object = client.put_object(namespace, bucketName, objectName, content)
         output = "Success: Put object '" + objectName + "' in bucket '" + bucketName + "'"
     except Exception as e:
         output = "Failed: " + str(e.message)
