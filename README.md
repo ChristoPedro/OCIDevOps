@@ -346,11 +346,8 @@ cd consumerNoSQL
 ```
 
 Depois edite o arquivo [func.yaml](consumerNoSQL/func.yaml) para adicionar os seguintes parâmetros do stream:
-- dwpassword
-- dbuser
-- schema
-- ordsbaseURL
-- schema
+- **dwpassword**
+- **ordsbaseURL**
 
 Apos a edição do arquivo faça o deploy da função:
 

@@ -8,6 +8,6 @@ entrypoint: /python/bin/fdk /function/func.py handler
 memory: 256
 config:
   dbpwd: [dbpwd]
-  dbuser: [dbuser]
-  ordsbaseURL: [ordsbaseURL:]
-  schema: [schema]
+  dbuser: admin
+  ordsbaseURL: [ordsbaseURL]
+  schema: admin
