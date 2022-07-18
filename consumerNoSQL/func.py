@@ -1,10 +1,22 @@
 import io
 import json
-import logging
+import oci
 import requests
-from kafka import KafkaConsumer
+import base64
 
 from fdk import response
+
+signer = oci.auth.signers.get_resource_principals_signer()
+
+secret_client = oci.secrets.SecretsClient(config={}, signer=signer)
+
+def read_secret_value(secret_client, secretid):
+    response = secret_client.get_secret_bundle(secret_id=secretid, version_number=1)
+    base64_Secret_content = response.data.secret_bundle_content.content
+    base64_secret_bytes = base64_Secret_content.encode('ascii')
+    base64_message_bytes = base64.b64decode(base64_secret_bytes)
+    secret_content = base64_message_bytes.decode('ascii')
+    return secret_content
 
 def soda_insert(ordsbaseurl, schema, dbuser, dbpwd, document):
     auth=(dbuser, dbpwd)
@@ -27,13 +39,15 @@ def handler(ctx, data: io.BytesIO=None):
         ordsbaseurl = cfg["ordsbaseURL"]
         schema = cfg["schema"]
         dbuser = cfg["dbuser"]
-        dbpwd = cfg["dbpwd"]
+        secretid = cfg["dbpwd"]
 
     except Exception as e:
         print('Missing function parameters', flush=True)
         raise
 
     content = data.getvalue()
+
+    dbpwd = read_secret_value(secret_client, secretid)
 
     resp = soda_insert(ordsbaseurl, schema, dbuser, dbpwd, content)
     
