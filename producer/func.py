@@ -10,10 +10,14 @@ signer = oci.auth.signers.get_resource_principals_signer()
 
 secret_client = oci.secrets.SecretsClient(config={}, signer=signer)
 
+# Busca o Secret no Vault pelo Secret OCID
+
 def read_secret_value(secret_client, secretid):
     secret_content = secret_client.get_secret_bundle(secretid).data.secret_bundle_content.content.encode('utf-8')
     decrypted_secret_content = base64.b64decode(secret_content).decode("utf-8")
     return decrypted_secret_content
+
+# Handler do fn projetct para functions
 
 def handler(ctx, data: io.BytesIO=None):
 
@@ -33,6 +37,8 @@ def handler(ctx, data: io.BytesIO=None):
     for keys in data.keys():
         topics.append(keys)
 
+# Gera os dados necessário para o produder kafka
+
     producer = KafkaProducer(bootstrap_servers = server, 
                          security_protocol = 'SASL_SSL', sasl_mechanism = 'PLAIN',
                          sasl_plain_username = username, 
@@ -40,9 +46,13 @@ def handler(ctx, data: io.BytesIO=None):
     
     key = 'Dados'.encode('utf-8')
     
+# Inicia o processamento do body para inserir nas filas corretas    
+
     for x in topics:
 
         values = json.dumps(data[x]).encode('UTF-8')
+
+# Inicia o kafka producer
 
         try:
             producer.send(x, key=key, value=values)
