@@ -7,7 +7,7 @@ run_image: fnproject/python:3.8
 entrypoint: /python/bin/fdk /function/func.py handler
 memory: 256
 config:
-  dbpwd: [dbpwd]
+  secretid: [secretid]
   dbuser: admin
   ordsbaseURL: [ordsbaseURL]
   schema: admin
