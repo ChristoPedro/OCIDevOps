@@ -21,7 +21,7 @@ def handler(ctx, data: io.BytesIO=None):
         cfg = ctx.Config()
         server = cfg["server"]
         username = cfg["username"]
-        secretid = cfg["password"]
+        secretid = cfg["secretid"]
     except Exception as e:
         print('Missing function parameters', flush=True)
         raise
