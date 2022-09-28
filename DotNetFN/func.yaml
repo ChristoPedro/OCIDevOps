@@ -1,0 +1,8 @@
+schema_version: 20180708
+name: dotnet
+version: 0.0.17
+runtime: docker
+triggers:
+- name: dotnet-trigger
+  type: http
+  source: /imagedims

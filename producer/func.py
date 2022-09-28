@@ -1,8 +1,21 @@
 import io
 from kafka import KafkaProducer
 from fdk import response
+import oci
 import logging
 import json
+
+signer = oci.auth.signers.get_resource_principals_signer()
+
+secret_client = oci.secrets.SecretsClient(config={}, signer=signer)
+
+def read_secret_value(secret_client, secretid):
+    response = secret_client.get_secret_bundle(secret_id=secretid, version_number=1)
+    base64_Secret_content = response.data.secret_bundle_content.content
+    base64_secret_bytes = base64_Secret_content.encode('ascii')
+    base64_message_bytes = base64.b64decode(base64_secret_bytes)
+    secret_content = base64_message_bytes.decode('ascii')
+    return secret_content
 
 def handler(ctx, data: io.BytesIO=None):
 
@@ -10,11 +23,12 @@ def handler(ctx, data: io.BytesIO=None):
         cfg = ctx.Config()
         server = cfg["server"]
         username = cfg["username"]
-        password = cfg["password"]
+        secretid = cfg["password"]
     except Exception as e:
         print('Missing function parameters', flush=True)
         raise
-
+    
+    password = read_secret_value(secret_client, secretid)
     data = json.loads(data.getvalue())
 
     topics = [] 
