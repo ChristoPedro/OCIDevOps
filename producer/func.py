@@ -4,6 +4,7 @@ from fdk import response
 import oci
 import logging
 import json
+import base64
 
 signer = oci.auth.signers.get_resource_principals_signer()
 
