@@ -44,23 +44,23 @@ def handler(ctx, data: io.BytesIO=None):
                          sasl_plain_username = username, 
                          sasl_plain_password = password)
     
-    key = 'Dados'.encode('utf-8')
-    
 # Inicia o processamento do body para inserir nas filas corretas    
 
     for x in topics:
 
-        values = json.dumps(data[x]).encode('UTF-8')
+        for key in data[x].keys():
 
-# Inicia o kafka producer
+            values = json.dumps(data[x][key]).encode('UTF-8')
 
-        try:
-            producer.send(x, key=key, value=values)
-            producer.flush()
-            resp = 'Dados Inseridos com sucesso'
-        except (Exception, ValueError) as ex:
-            logging.getLogger().error('error parsing json payload: ' + str(ex)) 
-            resp = 'error parsing json payload: ' + str(ex)
+    # Inicia o kafka producer
+
+            try:
+                producer.send(x, key=key.encode('utf-8'), value=values)
+                producer.flush()
+                resp = 'Dados Inseridos com sucesso'
+            except (Exception, ValueError) as ex:
+                logging.getLogger().error('error parsing json payload: ' + str(ex)) 
+                resp = 'error parsing json payload: ' + str(ex)
 
     return response.Response(
         ctx,
